@@ -1,27 +1,28 @@
 package ui.order;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import dialog.QuantityChange;
 import japangi.FoodTicketMachine;
-
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import ui.PayPanel;
 
 public class ChiPanel extends JPanel implements ActionListener {
 
 	JToggleButton jjajang, jjam, tang;
 	FoodTicketMachine ftm;
+	PayPanel payPanel;
 
 	public ChiPanel() {
 		this.ftm = FoodTicketMachine.getInstance();
+		payPanel = PayPanel.getInstance();
 		setLayout(null);
 		setBounds(100, 100, 756, 746);
 		setBackground(Color.RED);
@@ -62,7 +63,6 @@ public class ChiPanel extends JPanel implements ActionListener {
 		add(tangla);
 
 		addButtonListner();
-		this.setVisible(true);
 	}
 
 	public void addButtonListner() {
@@ -71,19 +71,23 @@ public class ChiPanel extends JPanel implements ActionListener {
 		tang.addActionListener(this);
 	}
 
+	
+	public void initButtonStatus() {
+		jjajang.setSelected(false);
+		jjam.setSelected(false);
+		tang.setSelected(false);
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		JToggleButton temp = (JToggleButton) e.getSource();
 		int foodNum = Integer.parseInt(temp.getName());
-		// 다이얼로그 출력
-		// 버튼이 눌린 상태가 아니면
 		if (temp.isSelected()) {
 			new QuantityChange(foodNum);
-		}
-		// 버튼이 눌린 상태라면 주문 취소
-		else {
+		}else {
 			ftm.cancelOrderMenu(ftm.getFoodName(foodNum));
+			payPanel.uiUpdate();
+			payPanel.getTotalPriceLb().setText(ftm.getPayMoney() + "원");
 		}
 	}
 }

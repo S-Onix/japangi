@@ -11,8 +11,13 @@ import javax.swing.JPanel;
 
 import japangi.FoodTicketMachine;
 import ui.order.ChiPanel;
+import ui.order.JapPanel;
+import ui.order.KorPanel;
+import ui.order.SnaPanel;
+import ui.order.UsaPanel;
+import java.awt.Font;
 
-public class Main extends JFrame implements ActionListener{
+public class Main extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JPanel topPanel, bottomPanel;
@@ -20,8 +25,12 @@ public class Main extends JFrame implements ActionListener{
 	private CardLayout cards;
 	private MainPanel mainPanel;
 	private PayPanel payPanel;
+	private KorPanel korPanel;
 	private ChiPanel chiPanel;
-	
+	private JapPanel japPanel;
+	private UsaPanel usaPanel;
+	private SnaPanel snaPanel;
+
 	FoodTicketMachine ftm;
 
 	/**
@@ -34,87 +43,102 @@ public class Main extends JFrame implements ActionListener{
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
+
 		/*
 		 * TopPanel 구성 초기화
-		 * */
+		 */
 		topPanel = new JPanel();
 		topPanel.setBounds(0, 0, 740, 56);
 		topPanel.setLayout(null);
-		
-		homeButton = new JButton("New button");
-		homeButton.setBounds(418, 10, 97, 36);
+
+		homeButton = new JButton("HOME");
+		homeButton.setFont(new Font("휴먼옛체", Font.PLAIN, 22));
+		homeButton.setBounds(418, 10, 97, 46);
 		homeButton.setName("home");
-		
-		payButton = new JButton("New button");
-		payButton.setBounds(516, 10, 97, 36);
+
+		payButton = new JButton("PAY");
+		payButton.setFont(new Font("휴먼옛체", Font.PLAIN, 22));
+		payButton.setBounds(516, 10, 97, 46);
 		payButton.setName("pay");
-		
-		resetButton = new JButton("New button");
-		resetButton.setBounds(613, 10, 97, 36);	
+
+		resetButton = new JButton("RE");
+		resetButton.setFont(new Font("휴먼옛체", Font.PLAIN, 22));
+		resetButton.setBounds(613, 10, 97, 46);
 		resetButton.setName("reset");
-		
+
 		topPanel.add(homeButton);
 		topPanel.add(payButton);
 		topPanel.add(resetButton);
-		
+
 		/*
 		 * BottomPanel 초기화
-		 * */
+		 */
 		bottomPanel = new JPanel();
 		cards = new CardLayout();
 		bottomPanel.setBounds(0, 56, 740, 690);
 		bottomPanel.setLayout(cards);
-		
-		
-		
+
 		/*
 		 * 카드 레이아웃 구성 요소 초기화
-		 * */
+		 */
 		newPanels();
 		addPanels();
-		
+
 		/*
 		 * contentPane 구성요소 추가
-		 * */
+		 */
 		this.showPanel("MAIN");
 		addActionListener();
 		contentPane.add(topPanel);
 		contentPane.add(bottomPanel);
 	}
-	
-	
-	
+
 	public void addActionListener() {
 		homeButton.addActionListener(this);
 		payButton.addActionListener(this);
 		resetButton.addActionListener(this);
 	}
-	
+
 	public void newPanels() {
 		mainPanel = new MainPanel(this);
-		payPanel = new PayPanel();
+		payPanel = PayPanel.getInstance();
+		korPanel = new KorPanel();
 		chiPanel = new ChiPanel();
-		
+		japPanel = new JapPanel();
+		usaPanel = new UsaPanel();
+		snaPanel = new SnaPanel();
+
 	}
-	
-	
+
 	public void addPanels() {
 		bottomPanel.add(mainPanel, "MAIN");
 		bottomPanel.add(payPanel, "PAY");
+		bottomPanel.add(korPanel, "KOREA");
 		bottomPanel.add(chiPanel, "CHINA");
+		bottomPanel.add(japPanel, "JAPEN");
+		bottomPanel.add(usaPanel, "USA");
+		bottomPanel.add(snaPanel, "SNACK");
+
 	}
-	
+
 	public void showPanel(String panelName) {
 		cards.show(bottomPanel, panelName);
 	}
-	
+
+	public void initButtonStatus() {
+		chiPanel.initButtonStatus();
+		japPanel.initButtonStatus();
+		korPanel.initButtonStatus();
+		snaPanel.initButtonStatus();
+		usaPanel.initButtonStatus();
+
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		JButton temp = (JButton) e.getSource();
-		switch(temp.getName()) {
+		switch (temp.getName()) {
 		case "home":
 			this.showPanel("MAIN");
 			break;
@@ -124,10 +148,12 @@ public class Main extends JFrame implements ActionListener{
 		case "reset":
 			this.showPanel("MAIN");
 			ftm.clearAllOrderMenu();
+			payPanel.clearTable();
+			initButtonStatus();
 			break;
 		}
 	}
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -143,5 +169,5 @@ public class Main extends JFrame implements ActionListener{
 			}
 		});
 	}
-	
+
 }

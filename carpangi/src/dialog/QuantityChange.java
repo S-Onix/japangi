@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import japangi.FoodTicketMachine;
@@ -45,7 +47,7 @@ public class QuantityChange extends JDialog implements ActionListener {
 		checkButton = new JButton("확 인");
 		checkButton.setFont(new Font("THE외계인설명서", Font.PLAIN, 27));
 		checkButton.setName("check");
-		checkButton.setBounds(175, 193, 89, 33);
+		checkButton.setBounds(160, 185, 116, 48);
 		getContentPane().add(checkButton);
 		checkButton.addActionListener(this);
 
@@ -99,7 +101,9 @@ public class QuantityChange extends JDialog implements ActionListener {
 		case "check":
 			if (getCount() != 0) {
 				ftm.selectMenu(foodNum, getCount());
-				payPanel.getTable().repaint();
+				// 리스트 갱신
+				payPanel.uiUpdate();
+				payPanel.getTotalPriceLb().setText(ftm.getPayMoney() + "원");
 				this.dispose();
 			}else {
 				JOptionPane.showMessageDialog(this, "수량을 선택하세요");

@@ -1,26 +1,33 @@
 package ui.order;
 
 import java.awt.Color;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+
+import dialog.QuantityChange;
+import japangi.FoodTicketMachine;
+import ui.PayPanel;
+
 public class UsaPanel extends JPanel implements ActionListener {
 
-	JButton chi, pi, ham, sand, cu;
+	JToggleButton chi, pi, ham, sand, cu;
+	FoodTicketMachine ftm;
+	PayPanel payPanel;
 
 	public UsaPanel() {
-
+		this.ftm = FoodTicketMachine.getInstance();
+		payPanel = PayPanel.getInstance();
 		setLayout(null);
 		setBounds(100, 100, 756, 746);
 		this.setBackground(Color.YELLOW);
 
-		chi = new JButton();
+		chi = new JToggleButton();
 		chi.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-1chicken.png"));
 		chi.setName("13");
 		chi.setBounds(38, 48, 195, 195);
@@ -30,7 +37,7 @@ public class UsaPanel extends JPanel implements ActionListener {
 		chila.setBounds(66, 255, 138, 36);
 		add(chila);
 
-		pi = new JButton();
+		pi = new JToggleButton();
 		pi.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-2pizza.jpg"));
 		pi.setName("14");
 		pi.setBounds(272, 48, 195, 195);
@@ -40,7 +47,7 @@ public class UsaPanel extends JPanel implements ActionListener {
 		pila.setBounds(302, 255, 132, 36);
 		add(pila);
 
-		ham = new JButton();
+		ham = new JToggleButton();
 		ham.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-3hambuger.jpg"));
 		ham.setName("15");
 		ham.setBounds(507, 48, 195, 200);
@@ -50,7 +57,7 @@ public class UsaPanel extends JPanel implements ActionListener {
 		hamla.setBounds(536, 255, 150, 36);
 		add(hamla);
 
-		sand = new JButton();
+		sand = new JToggleButton();
 		sand.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-4sandwich.png"));
 		sand.setName("16");
 		sand.setBounds(38, 305, 195, 195);
@@ -60,7 +67,7 @@ public class UsaPanel extends JPanel implements ActionListener {
 		sandla.setBounds(58, 512, 159, 36);
 		add(sandla);
 
-		cu = new JButton();
+		cu = new JToggleButton();
 		cu.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-6curry.png"));
 		cu.setName("17");
 		cu.setBounds(272, 305, 195, 195);
@@ -69,18 +76,38 @@ public class UsaPanel extends JPanel implements ActionListener {
 		cula.setFont(new Font("HY견고딕", Font.PLAIN, 20));
 		cula.setBounds(302, 512, 149, 36);
 		add(cula);
+		
+		addButtonListner();
 
+	}
+	public void addButtonListner() {
+		chi.addActionListener(this);
+		pi.addActionListener(this);
+		ham.addActionListener(this);
+		sand.addActionListener(this);
+		cu.addActionListener(this);
+	}
+	
+	public void initButtonStatus() {
+		chi.setSelected(false);
+		pi.setSelected(false);
+		ham.setSelected(false);
+		sand.setSelected(false);
+		cu.setSelected(false);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		JButton temp = (JButton) e.getSource();
+		JToggleButton temp = (JToggleButton) e.getSource();
 		int foodNum = Integer.parseInt(temp.getName());
-
-		// 다이얼로그 호출
-
-		// 계산
+		if (temp.isSelected()) {
+			new QuantityChange(foodNum);
+		}else {
+			ftm.cancelOrderMenu(ftm.getFoodName(foodNum));
+			payPanel.uiUpdate();
+			payPanel.getTotalPriceLb().setText(ftm.getPayMoney() + "원");
+		}
 
 	}
 

@@ -5,6 +5,12 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+
+import dialog.QuantityChange;
+import japangi.FoodTicketMachine;
+import ui.PayPanel;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,13 +18,18 @@ import java.awt.event.ActionListener;
 
 public class SnaPanel extends JPanel implements ActionListener{
 
+	FoodTicketMachine ftm;
+	JToggleButton dduc, sun, ti, kim;
+	PayPanel payPanel;
+	
 	public SnaPanel() {
-
+		this.ftm = FoodTicketMachine.getInstance();
+		payPanel = PayPanel.getInstance();
 		setLayout(null);
 		setBounds(100, 100, 756, 746);
 		this.setBackground(Color.ORANGE);
 
-		JButton dduc = new JButton();
+		dduc = new JToggleButton();
 		dduc.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-1dduck.png"));
 		dduc.setName("18");
 		dduc.setBounds(38, 48, 195, 195);
@@ -28,7 +39,7 @@ public class SnaPanel extends JPanel implements ActionListener{
 		dducla.setBounds(66, 255, 149, 36);
 		add(dducla);
 
-		JButton sun = new JButton();
+		sun = new JToggleButton();
 		sun.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-2soon.jpg"));
 		sun.setName("19");
 		sun.setBounds(272, 48, 195, 195);
@@ -38,7 +49,7 @@ public class SnaPanel extends JPanel implements ActionListener{
 		sunla.setBounds(309, 255, 119, 36);
 		add(sunla);
 
-		JButton ti = new JButton();
+		ti = new JToggleButton();
 		ti.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-3den.png"));
 		ti.setName("20");
 		ti.setBounds(507, 48, 195, 200);
@@ -48,7 +59,7 @@ public class SnaPanel extends JPanel implements ActionListener{
 		tila.setBounds(545, 255, 129, 36);
 		add(tila);
 
-		JButton kim = new JButton();
+		kim = new JToggleButton();
 		kim.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-4kimbap.png"));
 		kim.setName("21");
 		kim.setBounds(38, 305, 195, 195);
@@ -58,12 +69,34 @@ public class SnaPanel extends JPanel implements ActionListener{
 		kimla.setBounds(66, 512, 134, 36);
 		add(kimla);
 
-
+		addButtonListner();
+	}
+	
+	public void addButtonListner() {
+		dduc.addActionListener(this);
+		kim.addActionListener(this);
+		ti.addActionListener(this);
+		sun.addActionListener(this);
+	}
+	
+	public void initButtonStatus() {
+		dduc.setSelected(false);
+		kim.setSelected(false);
+		ti.setSelected(false);
+		sun.setSelected(false);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		JToggleButton temp = (JToggleButton) e.getSource();
+		int foodNum = Integer.parseInt(temp.getName());
+		if (temp.isSelected()) {
+			new QuantityChange(foodNum);
+		}else {
+			ftm.cancelOrderMenu(ftm.getFoodName(foodNum));
+			payPanel.uiUpdate();
+			payPanel.getTotalPriceLb().setText(ftm.getPayMoney() + "¿ø");
+		}
 	}
 }
