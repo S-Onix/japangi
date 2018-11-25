@@ -9,6 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import japangi.FoodTicketMachine;
+import ui.order.ChiPanel;
+
 public class Main extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
@@ -17,12 +20,15 @@ public class Main extends JFrame implements ActionListener{
 	private CardLayout cards;
 	private MainPanel mainPanel;
 	private PayPanel payPanel;
-	private ResetPanel resetPanel;
+	private ChiPanel chiPanel;
+	
+	FoodTicketMachine ftm;
 
 	/**
 	 * Create the frame.
 	 */
 	public Main() {
+		ftm = FoodTicketMachine.getInstance();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 756, 746);
 		contentPane = new JPanel();
@@ -87,15 +93,17 @@ public class Main extends JFrame implements ActionListener{
 	}
 	
 	public void newPanels() {
-		mainPanel = new MainPanel();
+		mainPanel = new MainPanel(this);
 		payPanel = new PayPanel();
-		resetPanel = new ResetPanel();
+		chiPanel = new ChiPanel();
+		
 	}
+	
 	
 	public void addPanels() {
 		bottomPanel.add(mainPanel, "MAIN");
 		bottomPanel.add(payPanel, "PAY");
-		bottomPanel.add(resetPanel, "RESET");
+		bottomPanel.add(chiPanel, "CHINA");
 	}
 	
 	public void showPanel(String panelName) {
@@ -115,6 +123,7 @@ public class Main extends JFrame implements ActionListener{
 			break;
 		case "reset":
 			this.showPanel("MAIN");
+			ftm.clearAllOrderMenu();
 			break;
 		}
 	}

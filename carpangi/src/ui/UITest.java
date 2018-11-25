@@ -2,13 +2,15 @@ package ui;
 
 import javax.swing.JFrame;
 
+import ui.order.ChiPanel;
+
 public class UITest extends JFrame{
-	PayPanel pay;
+	ChiPanel pay;
 	public UITest() {
 		this.setVisible(true);
 		this.setSize(740, 690);
 		
-		pay = new PayPanel();
+		pay = new ChiPanel();
 		this.add(pay);
 	}
 	

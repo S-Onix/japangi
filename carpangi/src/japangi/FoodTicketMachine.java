@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import database.MenuDAO;
 import item.MenuDTO;
@@ -11,8 +12,9 @@ import item.MenuDTO;
 
 public class FoodTicketMachine implements TicketMachine {
 
+	static FoodTicketMachine ftm;
 	// 주문 리스트(음식, 수량, 가격 저장)
-	ArrayList<ArrayList<String>> orderList;
+	Vector<Vector<String>> orderList;
 	// DB연동을 위한 참조변수
 	MenuDAO menuQuery;
 	// 메뉴를 저장하기 위한 참조 변수
@@ -22,12 +24,16 @@ public class FoodTicketMachine implements TicketMachine {
 	// 사용자가 지불해야할 총액
 	int payMoney = 0;
 
+	public static FoodTicketMachine getInstance() {
+		if(ftm == null) ftm = new FoodTicketMachine();
+		return ftm;
+	}
 
 	public FoodTicketMachine() {
 		menuQuery = new MenuDAO();
 		food = new HashMap<>();
 		foodBackup = new HashMap<>();
-		orderList = new ArrayList<ArrayList<String>>();
+		orderList = new Vector<Vector<String>>();
 		initFoodList();
 	}
 
@@ -70,20 +76,21 @@ public class FoodTicketMachine implements TicketMachine {
 	 * 주문시 음식 HashMap의 고유 번호를 찾아 수량을 변경 주문 리스트에 추가
 	 */
 	public void selectMenu(int foodNum, int count) {
-		if ((food.get(foodNum).getFoodCount() - count) >= 0) {
-			food.get(foodNum).setFoodCount(food.get(foodNum).getFoodCount() - count);
-			setPayMoney(getPayMoney() + (food.get(foodNum).getPrice() * count));
-			addOrderList(foodNum, count);
-		} else {
-			// 현재 남은 수량 출력
-			System.out.println(food.get(foodNum).getFoodCount() + "만큼 남아있습니다");
-			System.out.println("주문할 수 없습니다");
-		}
+		food.get(foodNum).setFoodCount(food.get(foodNum).getFoodCount() - count);
+		setPayMoney(getPayMoney() + (food.get(foodNum).getPrice() * count));
+		addOrderList(foodNum, count);
 	}
 	
 	public boolean isOrder(int foodNum, int count) {
-		return (food.get(foodNum).getFoodCount() - count >= 0);
-			
+		return (food.get(foodNum).getFoodCount() - count >= 0);	
+	}
+	
+	public int getFoodCount(int foodNum) {
+		return food.get(foodNum).getFoodCount();
+	}
+	
+	public String getFoodName(int foodNum) {
+		return food.get(foodNum).getMenuName();
 	}
 
 	/*
@@ -91,7 +98,7 @@ public class FoodTicketMachine implements TicketMachine {
 	 * (이름, 수량, 가격) 정보를 가지고 있음
 	 */
 	public void addOrderList(int foodNum, int count) {
-		ArrayList<String> s = new ArrayList<String>();
+		Vector<String> s = new Vector<String>();
 		String name = food.get(foodNum).getMenuName();
 		String countStr = count + "";
 		String priceStr = (food.get(foodNum).getPrice() * count) + "";
@@ -196,5 +203,9 @@ public class FoodTicketMachine implements TicketMachine {
 	public void setPayMoney(int payMoney) {
 		this.payMoney = payMoney;
 	}
+
+	public Vector<Vector<String>> getOrderList() {
+		return orderList;
+	}	
 
 }

@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.JToggleButton;
+import javax.swing.ImageIcon;
 
 public class Quantity extends JDialog {
 
@@ -52,5 +54,11 @@ public class Quantity extends JDialog {
 		lblNewLabel.setFont(new Font("문체부 궁체 정자체", Font.PLAIN, 34));
 		lblNewLabel.setBounds(67, 46, 331, 75);
 		contentPanel.add(lblNewLabel);
+		
+		JToggleButton tglbtnNewToggleButton = new JToggleButton("New toggle button");
+		tglbtnNewToggleButton.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\3-\uC77C\uC2DD\\3-3dup.png"));
+		tglbtnNewToggleButton.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\3-\uC77C\uC2DD\\3-3dupclick.png"));
+		tglbtnNewToggleButton.setBounds(28, 80, 135, 137);
+		contentPanel.add(tglbtnNewToggleButton);
 	}
 }

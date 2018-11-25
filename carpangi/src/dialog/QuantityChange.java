@@ -1,73 +1,110 @@
 package dialog;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import javax.swing.JTextField;
-import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
-public class QuantityChange extends JDialog {
+import japangi.FoodTicketMachine;
+import ui.PayPanel;
 
-	private final JPanel contentPanel = new JPanel();
-	private JTextField QuantityField;
+public class QuantityChange extends JDialog implements ActionListener {
+	JButton checkButton, plusButton, minusButton;
+	private JLabel countLa;
+	// 수량
+	int count = 0;
+	int foodNum;
+	FoodTicketMachine ftm;
+	PayPanel payPanel;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			QuantityChange dialog = new QuantityChange();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public QuantityChange(int foodNum) {
+		ftm = FoodTicketMachine.getInstance();
+		payPanel = PayPanel.getInstance();
+
+		///////////// 다이얼로그 창/////////////
+		getContentPane().setBackground(new Color(255, 255, 240));
+		setBounds(100, 100, 450, 300);
+		getContentPane().setLayout(null);
+		this.foodNum = foodNum;
+
+		///////////// 수량/////////////
+		countLa = new JLabel();
+		countLa.setHorizontalAlignment(SwingConstants.CENTER);
+		countLa.setFont(new Font("THE외계인설명서", Font.PLAIN, 74));
+		countLa.setBounds(160, 50, 116, 106);
+		getContentPane().add(countLa);
+		countLa.setText(String.valueOf(getCount()));
+
+		///////////// 확인버튼/////////////
+		checkButton = new JButton("확 인");
+		checkButton.setFont(new Font("THE외계인설명서", Font.PLAIN, 27));
+		checkButton.setName("check");
+		checkButton.setBounds(175, 193, 89, 33);
+		getContentPane().add(checkButton);
+		checkButton.addActionListener(this);
+
+		///////////// 더하기 버튼/////////////
+		plusButton = new JButton("+");
+		plusButton.setFont(new Font("THE외계인설명서", Font.PLAIN, 50));
+		plusButton.setName("+");
+		plusButton.setBounds(38, 76, 97, 71);
+		getContentPane().add(plusButton);
+		plusButton.addActionListener(this);
+
+		///////////// 빼기 버튼/////////////
+		minusButton = new JButton("-");
+		minusButton.setFont(new Font("THE외계인설명서", Font.PLAIN, 52));
+		minusButton.setName("-");
+		minusButton.setBounds(303, 76, 97, 71);
+		getContentPane().add(minusButton);
+		minusButton.addActionListener(this);
+
+		this.setVisible(true);
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 
-	/**
-	 * Create the dialog.
-	 */
-	public QuantityChange() {
-		setBounds(100, 100, 450, 300);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBackground(new Color(255, 222, 173));
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
-		{
-			JButton minusButton = new JButton("-");
-			minusButton.setFont(new Font("메이플스토리", Font.PLAIN, 30));
-			minusButton.setBounds(49, 69, 50, 50);
-			contentPanel.add(minusButton);
-		}
-		{
-			JButton plusButton_1 = new JButton("+");
-			plusButton_1.setFont(new Font("메이플스토리", Font.PLAIN, 30));
-			plusButton_1.setBounds(331, 69, 50, 50);
-			contentPanel.add(plusButton_1);
-		}
-		{
-			QuantityField = new JTextField();
-			QuantityField.setBounds(159, 42, 116, 100);
-			contentPanel.add(QuantityField);
-			QuantityField.setColumns(10);
-		}
-		{
-			JButton cancelButton = new JButton(" \uCDE8 \uC18C ");
-			cancelButton.setFont(new Font("문체부 제목 바탕체", Font.PLAIN, 18));
-			cancelButton.setBounds(71, 176, 97, 59);
-			contentPanel.add(cancelButton);
-		}
-		{
-			JButton checkButton_3 = new JButton(" \uD655 \uC778 ");
-			checkButton_3.setFont(new Font("문체부 제목 바탕체", Font.PLAIN, 18));
-			checkButton_3.setBounds(256, 176, 97, 59);
-			contentPanel.add(checkButton_3);
+	public int getCount() {
+		return this.count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton temp = (JButton) e.getSource();
+		switch (temp.getName()) {
+		case "-":
+			// label 변경
+			if (getCount() > 0) {
+				setCount(getCount() - 1);
+				countLa.setText(String.valueOf(getCount()));
+			}
+			break;
+		case "+":
+			if (ftm.getFoodCount(foodNum) >= getCount()) {
+				setCount(getCount() + 1);
+				countLa.setText(String.valueOf(getCount()));
+			} else
+				JOptionPane.showMessageDialog(this,
+						ftm.getFoodName(foodNum) + "의 남은 수량은 " + ftm.getFoodCount(foodNum) + "개 입니다.");
+			break;
+		case "check":
+			if (getCount() != 0) {
+				ftm.selectMenu(foodNum, getCount());
+				payPanel.getTable().repaint();
+				this.dispose();
+			}else {
+				JOptionPane.showMessageDialog(this, "수량을 선택하세요");
+			}
+			break;
 		}
 	}
 
