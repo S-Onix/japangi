@@ -149,6 +149,7 @@ public class Main extends JFrame implements ActionListener {
 			this.showPanel("MAIN");
 			ftm.clearAllOrderMenu();
 			payPanel.clearTable();
+			payPanel.getTotalPriceLb().setText(ftm.getPayMoney()+"¿ø");
 			initButtonStatus();
 			break;
 		}

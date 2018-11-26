@@ -155,13 +155,12 @@ public class FoodTicketMachine implements TicketMachine {
 	 */
 	public void cancelOrderList(String foodName) {
 		for (int i = 0; i < orderList.size(); i++) {
-			for (int j = 0; j < orderList.get(i).size(); i++) {
-				if (orderList.get(i).contains(foodName)) {
-					orderList.remove(i);
-					return;
-				}
+			if (orderList.get(i).contains(foodName)) {
+				orderList.remove(i);
+				break;
 			}
 		}
+		
 	}
 
 	/*

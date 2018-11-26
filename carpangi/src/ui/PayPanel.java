@@ -1,9 +1,7 @@
 package ui;
 
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -124,6 +122,11 @@ public class PayPanel extends JPanel implements ActionListener {
 					int money = Integer.parseInt(moneyStr);
 					if (ftm.checkMoney(money)) {
 						ftm.calculateMenu();
+						clearTable();
+						ftm.clearAllOrderMenu();
+						ftm.setPayMoney(0);
+						ftm.clearAllOrderMenu();
+						// 버튼 이벤트만 초기화하면 됨
 					} else {
 						JOptionPane.showMessageDialog(this, "금액이 부족합니다");
 					}
@@ -132,10 +135,14 @@ public class PayPanel extends JPanel implements ActionListener {
 
 			break;
 		case "cancel":
-			// 에러가 발생하는 이유를 모르겠음
-			String foodName = (String) table.getValueAt(table.getSelectedRow(), 0);
+			int row = table.getSelectedRow();
+			if (row < 0)
+				return;
+			String foodName = (String) table.getValueAt(row, 0);
+			model = (DefaultTableModel) table.getModel();
+			model.removeRow(row);
 			ftm.cancelOrderMenu(foodName);
-			model.removeRow(table.getSelectedRow());
+			totalPriceLb.setText(ftm.getPayMoney() + "원");
 			break;
 
 		}

@@ -30,6 +30,7 @@ public class SnaPanel extends JPanel implements ActionListener{
 		this.setBackground(Color.ORANGE);
 
 		dduc = new JToggleButton();
+		dduc.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-1dduckclick.png"));
 		dduc.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-1dduck.png"));
 		dduc.setName("18");
 		dduc.setBounds(38, 48, 195, 195);
@@ -40,6 +41,7 @@ public class SnaPanel extends JPanel implements ActionListener{
 		add(dducla);
 
 		sun = new JToggleButton();
+		sun.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-2soonclick.jpg"));
 		sun.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-2soon.jpg"));
 		sun.setName("19");
 		sun.setBounds(272, 48, 195, 195);
@@ -50,6 +52,7 @@ public class SnaPanel extends JPanel implements ActionListener{
 		add(sunla);
 
 		ti = new JToggleButton();
+		ti.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-3denclick.png"));
 		ti.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-3den.png"));
 		ti.setName("20");
 		ti.setBounds(507, 48, 195, 200);
@@ -60,6 +63,7 @@ public class SnaPanel extends JPanel implements ActionListener{
 		add(tila);
 
 		kim = new JToggleButton();
+		kim.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-4kimbapclick.png"));
 		kim.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\5-\uBD84\uC2DD\\5-4kimbap.png"));
 		kim.setName("21");
 		kim.setBounds(38, 305, 195, 195);

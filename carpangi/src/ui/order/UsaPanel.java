@@ -28,6 +28,7 @@ public class UsaPanel extends JPanel implements ActionListener {
 		this.setBackground(Color.YELLOW);
 
 		chi = new JToggleButton();
+		chi.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-1chickenclick.png"));
 		chi.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-1chicken.png"));
 		chi.setName("13");
 		chi.setBounds(38, 48, 195, 195);
@@ -38,6 +39,7 @@ public class UsaPanel extends JPanel implements ActionListener {
 		add(chila);
 
 		pi = new JToggleButton();
+		pi.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-2pizzaclick.jpg"));
 		pi.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-2pizza.jpg"));
 		pi.setName("14");
 		pi.setBounds(272, 48, 195, 195);
@@ -48,6 +50,7 @@ public class UsaPanel extends JPanel implements ActionListener {
 		add(pila);
 
 		ham = new JToggleButton();
+		ham.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-3hambugerclick.jpg"));
 		ham.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-3hambuger.jpg"));
 		ham.setName("15");
 		ham.setBounds(507, 48, 195, 200);
@@ -58,6 +61,7 @@ public class UsaPanel extends JPanel implements ActionListener {
 		add(hamla);
 
 		sand = new JToggleButton();
+		sand.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-4sandwichclick.png"));
 		sand.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-4sandwich.png"));
 		sand.setName("16");
 		sand.setBounds(38, 305, 195, 195);
@@ -68,6 +72,7 @@ public class UsaPanel extends JPanel implements ActionListener {
 		add(sandla);
 
 		cu = new JToggleButton();
+		cu.setSelectedIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-6curryclick.png"));
 		cu.setIcon(new ImageIcon("C:\\work\\miniimg\\img\\4-\uC591\uC2DD\\4-6curry.png"));
 		cu.setName("17");
 		cu.setBounds(272, 305, 195, 195);
